@@ -20,8 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.keestra.draughts.Proto.Id
-import com.keestra.draughts.Proto.Reader
-import com.keestra.draughts.Proto.string
 
 class MainActivity : ComponentActivity() {
 

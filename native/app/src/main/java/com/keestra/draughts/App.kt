@@ -119,7 +119,7 @@ private fun BoardScreen(state: GameState) {
                             while (true) {
                                 val e = awaitPointerEvent()
                                 val pos = e.changes.first().position
-                                val cell = size.minDimension / 8f
+                                val cell = minOf(size.width, size.height) / 8f
                                 val x = (pos.x / cell).toInt().coerceIn(0, 7)
                                 val y = (pos.y / cell).toInt().coerceIn(0, 7)
                                 state.tap(x, y)
@@ -127,7 +127,7 @@ private fun BoardScreen(state: GameState) {
                         }
                     }
             ) {
-                val cell = size.minDimension / 8f
+                val cell = minOf(size.width, size.height) / 8f
                 val light = Color(0xFFE6CFA3); val darkC = Color(0xFF7A4A22)
                 drawRect(darkC)
                 for (y in 0..7) for (x in 0..7) if ((x + y) % 2 == 1) {

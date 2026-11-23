@@ -19,7 +19,7 @@ jobs:
           channel: stable
       - run: flutter pub get
         working-directory: app
-      - run: flutter build apk --release --target-platform android-x64
+      - run: flutter build apk --release
         working-directory: app
       - name: Publish APK release
         uses: softprops/action-gh-release@v2

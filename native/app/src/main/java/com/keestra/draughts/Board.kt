@@ -114,7 +114,7 @@ class Board(var cells: IntArray = initial(), var whiteToMove: Boolean = true) {
 
         fun parse(text: String): Board {
             val b = Board()
-            text.split(RegExp("[x-]")).forEachIndexed { i, s ->
+            text.split(Regex("[x-]")).forEachIndexed { i, s ->
                 if (i == 0) return@forEachIndexed
                 val sq = sq(s) ?: return@forEachIndexed
                 // apply as a quiet move for parsing purposes

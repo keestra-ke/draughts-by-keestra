@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         socket = GameSocket("wss://c.keestra.workers.dev")
+        state.socket = socket
         socket.onFrame = { bytes -> state.onFrame(bytes) }
         socket.connect()
         setContent { MaterialTheme { App(state) } }
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity() {
 }
 
 class GameState {
+    lateinit var socket: GameSocket
     var name: String? = null
     var loggedIn = false
     var screen = "login"
@@ -124,7 +126,7 @@ class GameState {
     }
 
     fun applyMoveText(text: String) {
-        val parts = text.split(RegExp("[x-]"))
+        val parts = text.split(Regex("[x-]"))
         if (parts.size < 2) return
         val from = Board.sq(parts[0]) ?: return
         val path = parts.drop(1).mapNotNull { Board.sq(it) }
@@ -167,3 +169,4 @@ class GameState {
     }
     fun join(id: Long) { socket.send(Proto.connectGameQ(id)) }
 }
+

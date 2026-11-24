@@ -142,7 +142,7 @@ private fun LoginScreen(state: GameState) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(48.dp))
-            Text("Checkers  Land  Online", color = Cream, fontSize: 26.sp, fontWeight = FontWeight.Bold)
+            Text("Checkers  Land  Online", color = Cream, fontSize = 26.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(4.dp))
             Text("Keestra Draughts", color = Cream.copy(alpha = 0.6f), fontSize = 12.sp)
             Spacer(Modifier.height(20.dp))
@@ -165,7 +165,7 @@ private fun LoginScreen(state: GameState) {
             }
             Spacer(Modifier.height(10.dp))
             if (state.status != null) {
-                Text(state.status!!, color = Color(0xFFFFA726), fontSize: 12.sp)
+                Text(state.status!!, color = Color(0xFFFFA726), fontSize = 12.sp)
             }
         }
     }
@@ -180,7 +180,7 @@ private fun _radio(label: String, selected: Boolean, onSelect: () -> Unit) {
             if (selected) drawCircle(Cream, 3.5f)
         }
         Spacer(Modifier.width(4.dp))
-        Text(label, color = if (selected) Cream else Cream.copy(alpha = 0.6f), fontSize: 11.sp)
+        Text(label, color = if (selected) Cream else Cream.copy(alpha = 0.6f), fontSize = 11.sp)
     }
 }
 
@@ -192,9 +192,9 @@ private fun MenuScreen(state: GameState) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(40.dp))
-            Text("Draughts by Keestra", color = Cream, fontSize: 24.sp, fontWeight = FontWeight.Bold)
+            Text("Draughts by Keestra", color = Cream, fontSize = 24.sp, fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(4.dp))
-            Text("Signed in: ${state.name ?: "?"}", color = Cream.copy(alpha = 0.6f), fontSize: 11.sp)
+            Text("Signed in: ${state.name ?: "?"}", color = Cream.copy(alpha = 0.6f), fontSize = 11.sp)
             Spacer(Modifier.height(28.dp))
             listOf("Play", "Started games", "User profile", "Players", "Settings").forEach { label ->
                 KeestraButton(label, modifier = Modifier.fillMaxWidth().padding(4.dp)) {
@@ -208,12 +208,12 @@ private fun MenuScreen(state: GameState) {
 @Composable
 private fun LobbyScreen(state: GameState) {
     Column(modifier = Modifier.fillMaxSize().background(LeatherDark)) {
-        Text("Opened Games", color = Cream, fontSize: 18.sp, fontWeight = FontWeight.Bold,
+        Text("Opened Games", color = Cream, fontSize = 18.sp, fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(14.dp))
         Row(modifier = Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("Kind of checkers:", color = Cream.copy(alpha = 0.7f), fontSize: 11.sp)
+            Text("Kind of checkers:", color = Cream.copy(alpha = 0.7f), fontSize = 11.sp)
             Spacer(Modifier.width(6.dp))
-            Text("Kenyan Nairobi", color = Cream, fontSize: 11.sp)
+            Text("Kenyan Nairobi", color = Cream, fontSize = 11.sp)
         }
         Divider(color = Color.Black.copy(alpha = 0.3f))
         Column(modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())) {
@@ -240,9 +240,9 @@ private fun LobbyScreen(state: GameState) {
 private fun BoardScreen(state: GameState) {
     Column(modifier = Modifier.fillMaxSize().background(LeatherDark)) {
         Text("${state.game?.white ?: "?"}  vs  ${state.game?.black ?: "?"}",
-            color = Cream, fontSize: 14.sp, modifier = Modifier.padding(10.dp))
+            color = Cream, fontSize = 14.sp, modifier = Modifier.padding(10.dp))
         Text(if (state.myTurn) "Your turn" else "Opponent's turn",
-            color = Cream.copy(alpha = 0.7f), fontSize: 11.sp, modifier = Modifier.padding(10.dp))
+            color = Cream.copy(alpha = 0.7f), fontSize = 11.sp, modifier = Modifier.padding(10.dp))
         Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
             Canvas(
                 modifier = Modifier.fillMaxWidth().aspectRatio(1f).padding(6.dp)
@@ -280,6 +280,7 @@ private fun BoardScreen(state: GameState) {
         state.status?.let { Text(it, color = Color(0xFFFFA726), modifier = Modifier.padding(10.dp)) }
     }
 }
+
 
 
 

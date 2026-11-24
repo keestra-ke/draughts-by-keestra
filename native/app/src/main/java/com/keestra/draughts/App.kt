@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -30,14 +31,16 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Palette sampled from the original APK screenshots.
-private val Leather = Color(0xFF6E4630)
-private val LeatherDark = Color(0xFF532616)
+// Palette sampled from the original APK screenshots (emu1: login).
+private val Leather = Color(0xFFB89272)        // light tan leather
+private val LeatherDark = Color(0xFF9A7A5C)
 private val Cream = Color(0xFFFBE6B8)
-private val ButtonTop = Color(0xFF8A5A36)
-private val ButtonBottom = Color(0xFF4A2113)
-private val FieldBg = Color(0xFF2A1710)
+private val FieldBg = Color(0xFFF2E8D8)        // near-white input box
+private val FieldText = Color(0xFF2A1A10)
+private val LoginRed = Color(0xFFB02418)       // red login button
+private val GuestGrey = Color(0xFF9E9E9E)      // grey guest button
 private val Gold = Color(0xFFE8C87A)
+private val LinkGrey = Color(0xFF8A8A8A)
 
 @Composable
 fun App(state: GameState) {
@@ -72,28 +75,30 @@ private fun LeatherBackground(content: @Composable () -> Unit) {
         } else {
             Box(Modifier.fillMaxSize().background(Leather))
         }
-        Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.35f)))
+        Box(Modifier.fillMaxSize().background(Color.White.copy(alpha = 0.05f)))
         content()
     }
 }
 
-/** Brown gradient button with a gold border, like the original. */
+/** Brown/red gradient button with a gold border, like the original. */
 @Composable
 private fun KeestraButton(
     text: String,
     modifier: Modifier = Modifier,
+    bg: Color = LoginRed,
+    fg: Color = Cream,
     onClick: () -> Unit
 ) {
     Box(
         modifier = modifier
             .height(46.dp)
             .clip(RoundedCornerShape(6.dp))
-            .background(Brush.verticalGradient(listOf(ButtonTop, ButtonBottom)))
+            .background(bg)
+            .border(1.dp, Gold.copy(alpha = 0.6f), RoundedCornerShape(6.dp))
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
-        Box(Modifier.matchParentSize().clip(RoundedCornerShape(6.dp)).background(Color.Black.copy(alpha = 0.0f)))
-        Text(text, color = Cream, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(text, color = fg, fontSize = 16.sp, fontWeight = FontWeight.Bold)
     }
 }
 
@@ -106,7 +111,7 @@ private fun KeestraField(
     password: Boolean = false
 ) {
     Column(modifier = modifier) {
-        Text(label, color = Cream.copy(alpha = 0.8f), fontSize = 12.sp)
+        Text(label, color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(2.dp))
         Box(
             modifier = Modifier
@@ -114,6 +119,7 @@ private fun KeestraField(
                 .height(46.dp)
                 .clip(RoundedCornerShape(6.dp))
                 .background(FieldBg)
+                .border(1.dp, Gold.copy(alpha = 0.5f), RoundedCornerShape(6.dp))
                 .padding(10.dp),
             contentAlignment = Alignment.CenterStart
         ) {
@@ -121,9 +127,9 @@ private fun KeestraField(
                 value = value,
                 onValueChange = onValue,
                 singleLine = true,
-                textStyle = TextStyle(color = Cream, fontSize = 15.sp),
+                textStyle = TextStyle(color = FieldText, fontSize = 15.sp),
                 visualTransformation = if (password) PasswordVisualTransformation() else VisualTransformation.None,
-                cursorBrush = androidx.compose.ui.graphics.SolidColor(Gold),
+                cursorBrush = androidx.compose.ui.graphics.SolidColor(FieldText),
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -138,34 +144,51 @@ private fun LoginScreen(state: GameState) {
 
     LeatherBackground {
         Column(
-            modifier = Modifier.fillMaxSize().padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxSize().padding(start = 24.dp, end = 24.dp, top = 72.dp)
         ) {
-            Spacer(Modifier.height(48.dp))
-            Text("Checkers  Land  Online", color = Cream, fontSize = 26.sp, fontWeight = FontWeight.Bold)
-            Spacer(Modifier.height(4.dp))
-            Text("Keestra Draughts", color = Cream.copy(alpha = 0.6f), fontSize = 12.sp)
-            Spacer(Modifier.height(20.dp))
-            Row {
+            // Login field (matches emu1: label above a near-white box)
+            KeestraField("Login:", name, { name = it }, modifier = Modifier.fillMaxWidth())
+            Spacer(Modifier.height(18.dp))
+            KeestraField("Password:", pass, { pass = it }, password = true, modifier = Modifier.fillMaxWidth())
+            Spacer(Modifier.height(26.dp))
+            // Red login button
+            KeestraButton("Login", modifier = Modifier.fillMaxWidth()) {
+                state.login(name, pass, mode)
+            }
+            Spacer(Modifier.height(14.dp))
+            // Forgot password link
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Text(
+                    "Forgot your password?",
+                    color = Color.White,
+                    fontSize = 13.sp,
+                    modifier = Modifier.clickable { /* TODO: reset flow */ }
+                )
+            }
+            Spacer(Modifier.height(26.dp))
+            // Guest button (grey)
+            KeestraButton(
+                "Guest",
+                modifier = Modifier.fillMaxWidth(),
+                bg = GuestGrey,
+                fg = Color.White
+            ) {
+                state.login("", "", Proto.GUEST)
+            }
+            Spacer(Modifier.height(12.dp))
+            // mode switch (registration / registered) kept subtle
+            Row(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                 _radio("Registered user", mode == Proto.LOGIN) { mode = Proto.LOGIN }
                 Spacer(Modifier.width(18.dp))
                 _radio("Guest", mode == Proto.GUEST) { mode = Proto.GUEST }
                 Spacer(Modifier.width(18.dp))
                 _radio("Registration", mode == Proto.NEW_PLAYER) { mode = Proto.NEW_PLAYER }
             }
-            Spacer(Modifier.height(16.dp))
-            KeestraField("Login:", name, { name = it }, modifier = Modifier.fillMaxWidth())
-            if (mode != Proto.GUEST) {
-                Spacer(Modifier.height(12.dp))
-                KeestraField("Password:", pass, { pass = it }, password = true, modifier = Modifier.fillMaxWidth())
-            }
-            Spacer(Modifier.height(22.dp))
-            KeestraButton("Login", modifier = Modifier.fillMaxWidth()) {
-                state.login(name, pass, mode)
-            }
-            Spacer(Modifier.height(10.dp))
             if (state.status != null) {
-                Text(state.status!!, color = Color(0xFFFFA726), fontSize = 12.sp)
+                Spacer(Modifier.height(14.dp))
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Text(state.status!!, color = Color(0xFFFFA726), fontSize = 12.sp)
+                }
             }
         }
     }
@@ -176,11 +199,11 @@ private fun _radio(label: String, selected: Boolean, onSelect: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable { onSelect() }) {
         Canvas(modifier = Modifier.size(14.dp)) {
             drawCircle(Color(0xFF2A1710), 7f)
-            drawCircle(Cream.copy(alpha = if (selected) 1f else 0.4f), 7f, style = Stroke(width = 1.5f))
-            if (selected) drawCircle(Cream, 3.5f)
+            drawCircle(Color.White.copy(alpha = if (selected) 1f else 0.5f), 7f, style = Stroke(width = 1.5f))
+            if (selected) drawCircle(Color.White, 3.5f)
         }
         Spacer(Modifier.width(4.dp))
-        Text(label, color = if (selected) Cream else Cream.copy(alpha = 0.6f), fontSize = 11.sp)
+        Text(label, color = Color.White, fontSize = 11.sp)
     }
 }
 

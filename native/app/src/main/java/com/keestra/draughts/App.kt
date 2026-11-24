@@ -114,7 +114,7 @@ private fun KeestraField(
                 .height(46.dp)
                 .clip(RoundedCornerShape(6.dp))
                 .background(FieldBg)
-                .padding(start: 10.dp, end: 10.dp),
+                .padding(10.dp),
             contentAlignment = Alignment.CenterStart
         ) {
             BasicTextField(
@@ -138,7 +138,7 @@ private fun LoginScreen(state: GameState) {
 
     LeatherBackground {
         Column(
-            modifier = Modifier.fillMaxSize().padding(start: 24.dp, end: 24.dp),
+            modifier = Modifier.fillMaxSize().padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(48.dp))
@@ -188,7 +188,7 @@ private fun _radio(label: String, selected: Boolean, onSelect: () -> Unit) {
 private fun MenuScreen(state: GameState) {
     LeatherBackground {
         Column(
-            modifier = Modifier.fillMaxSize().padding(start: 28.dp, end: 28.dp),
+            modifier = Modifier.fillMaxSize().padding(28.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(40.dp))
@@ -197,7 +197,7 @@ private fun MenuScreen(state: GameState) {
             Text("Signed in: ${state.name ?: "?"}", color = Cream.copy(alpha = 0.6f), fontSize: 11.sp)
             Spacer(Modifier.height(28.dp))
             listOf("Play", "Started games", "User profile", "Players", "Settings").forEach { label ->
-                KeestraButton(label, modifier = Modifier.fillMaxWidth().padding(vertical: 4.dp)) {
+                KeestraButton(label, modifier = Modifier.fillMaxWidth().padding(4.dp)) {
                     if (label == "Play") { state.screen = "lobby"; state.subscribeLobby() }
                 }
             }
@@ -210,7 +210,7 @@ private fun LobbyScreen(state: GameState) {
     Column(modifier = Modifier.fillMaxSize().background(LeatherDark)) {
         Text("Opened Games", color = Cream, fontSize: 18.sp, fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(14.dp))
-        Row(modifier = Modifier.padding(start: 14.dp, end: 14.dp), verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
             Text("Kind of checkers:", color = Cream.copy(alpha = 0.7f), fontSize: 11.sp)
             Spacer(Modifier.width(6.dp))
             Text("Kenyan Nairobi", color = Cream, fontSize: 11.sp)
@@ -242,7 +242,7 @@ private fun BoardScreen(state: GameState) {
         Text("${state.game?.white ?: "?"}  vs  ${state.game?.black ?: "?"}",
             color = Cream, fontSize: 14.sp, modifier = Modifier.padding(10.dp))
         Text(if (state.myTurn) "Your turn" else "Opponent's turn",
-            color = Cream.copy(alpha = 0.7f), fontSize: 11.sp, modifier = Modifier.padding(start: 10.dp, end: 10.dp))
+            color = Cream.copy(alpha = 0.7f), fontSize: 11.sp, modifier = Modifier.padding(10.dp))
         Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
             Canvas(
                 modifier = Modifier.fillMaxWidth().aspectRatio(1f).padding(6.dp)
@@ -280,5 +280,7 @@ private fun BoardScreen(state: GameState) {
         state.status?.let { Text(it, color = Color(0xFFFFA726), modifier = Modifier.padding(10.dp)) }
     }
 }
+
+
 
 

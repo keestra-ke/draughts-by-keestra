@@ -177,7 +177,7 @@ private fun LoginScreen(state: GameState) {
             }
             Spacer(Modifier.height(12.dp))
             // mode switch (registration / registered) kept subtle
-            Row(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+            Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
                 _radio("Registered user", mode == Proto.LOGIN) { mode = Proto.LOGIN }
                 Spacer(Modifier.width(18.dp))
                 _radio("Guest", mode == Proto.GUEST) { mode = Proto.GUEST }

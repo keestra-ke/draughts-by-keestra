@@ -7,7 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCorner
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -87,12 +87,12 @@ private fun KeestraButton(
     Box(
         modifier = modifier
             .height(46.dp)
-            .clip(RoundedCorner(6.dp))
+            .clip(RoundedCornerShape(6.dp))
             .background(Brush.verticalGradient(listOf(ButtonTop, ButtonBottom)))
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
-        Box(Modifier.matchParentSize().clip(RoundedCorner(6.dp)).background(Color.Black.copy(alpha = 0.0f)))
+        Box(Modifier.matchParentSize().clip(RoundedCornerShape(6.dp)).background(Color.Black.copy(alpha = 0.0f)))
         Text(text, color = Cream, fontSize = 16.sp, fontWeight = FontWeight.Bold)
     }
 }
@@ -112,7 +112,7 @@ private fun KeestraField(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(46.dp)
-                .clip(RoundedCorner(6.dp))
+                .clip(RoundedCornerShape(6.dp))
                 .background(FieldBg)
                 .padding(horizontal: 10.dp),
             contentAlignment = Alignment.CenterStart
@@ -280,3 +280,4 @@ private fun BoardScreen(state: GameState) {
         state.status?.let { Text(it, color = Color(0xFFFFA726), modifier = Modifier.padding(10.dp)) }
     }
 }
+

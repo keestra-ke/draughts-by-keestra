@@ -251,7 +251,7 @@ private fun BoardScreen(state: GameState) {
                             while (true) {
                                 val e = awaitPointerEvent()
                                 val pos = e.changes.first().position
-                                val cell = size.minDimension / 8f
+                                val cell = minOf(size.width, size.height) / 8f
                                 val x = (pos.x / cell).toInt().coerceIn(0, 7)
                                 val y = (pos.y / cell).toInt().coerceIn(0, 7)
                                 state.tap(x, y)
@@ -259,7 +259,7 @@ private fun BoardScreen(state: GameState) {
                         }
                     }
             ) {
-                val cell = size.minDimension / 8f
+                val cell = minOf(size.width, size.height) / 8f
                 drawRect(Color(0xFF7A4A22))
                 for (y in 0..7) for (x in 0..7) if ((x + y) % 2 == 1) {
                     drawRect(Color(0xFFE6CFA3), topLeft = Offset(x * cell, y * cell), size = androidx.compose.ui.geometry.Size(cell, cell))
